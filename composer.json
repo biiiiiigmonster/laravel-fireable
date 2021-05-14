@@ -1,5 +1,5 @@
 {
-    "name": "biiiiiigmonster/eventable",
+    "name": "biiiiiigmonster/laravel-eventable",
     "description": "Laravel framework eloquent trait",
     "type": "library",
     "keywords": ["laravel", "orm", "trait"],
