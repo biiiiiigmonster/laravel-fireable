@@ -24,7 +24,7 @@ English | [中文](./README-CN.md)
 # Installation
 
 ```bash
-composer require biiiiiigmonster/eventable
+composer require biiiiiigmonster/laravel-eventable
 ```
 
 # License
