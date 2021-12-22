@@ -5,25 +5,23 @@ namespace Biiiiiigmonster\Eventable;
 
 
 use Closure;
+use Illuminate\Database\Eloquent\Model;
 
 trait Eventable
 {
     /**
-     * 自动注册
+     * The attributes that should be event for save.
+     *
+     * @var array
+     */
+    protected array $eventable = [];
+
+    /**
+     * Auto register eventable.
      */
     protected static function bootEventable(): void
     {
-        static::saved(function ($model) {
-            $eventable = $model->getEventable();
-            foreach ($eventable as $attribute => $body) {
-                if (!$model->isDirty($attribute)) continue;
-                foreach ((array)$body as $value => $eventClass) {
-                    if (is_numeric($value) || $model->$attribute === $value) {
-                        event(new $eventClass($model));
-                    }
-                }
-            }
-        });
+        static::saved(fn (Model $model) => Eventabler::make($model)->handle());
     }
 
     /**
@@ -41,7 +39,7 @@ trait Eventable
      * @param array $eventable
      * @return $this
      */
-    public function setEventable(array $eventable)
+    public function setEventable(array $eventable): static
     {
         $this->eventable = $eventable;
 
@@ -54,7 +52,7 @@ trait Eventable
      * @param array|string|null $eventables
      * @return $this
      */
-    public function makeEventable($eventables)
+    public function makeEventable(array|string|null $eventables): static
     {
         $this->eventable = array_merge(
             $this->eventable, is_array($eventables) ? $eventables : func_get_args()
@@ -70,7 +68,7 @@ trait Eventable
      * @param array|string|null $eventables
      * @return $this
      */
-    public function makeEventableIf($condition, $eventables)
+    public function makeEventableIf(bool|Closure $condition, array|string|null $eventables): static
     {
         $condition = $condition instanceof Closure ? $condition($this) : $condition;
 
