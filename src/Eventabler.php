@@ -6,12 +6,11 @@ namespace BiiiiiigMonster\Eventable;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use JetBrains\PhpStorm\Pure;
 
 class Eventabler
 {
     /**
-     * Observer model.
+     * Observe model.
      *
      * @var Model
      */
@@ -33,7 +32,6 @@ class Eventabler
      * @param Model $model
      * @return static
      */
-    #[Pure]
     public static function make(Model $model): static
     {
         return new static($model);
