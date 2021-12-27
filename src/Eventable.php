@@ -25,7 +25,8 @@ trait Eventable
     }
 
     /**
-     * Get eventable
+     * Get eventable.
+     *
      * @return array
      */
     public function getEventable(): array
