@@ -64,7 +64,7 @@ class Eventabler
      * @param mixed $value
      * @return bool
      */
-    private function isMatchValue(string $attribute, mixed $value): bool
+    protected function isMatchValue(string $attribute, mixed $value): bool
     {
         return $this->model->getAttributeValue($attribute) === $value;
     }
@@ -75,7 +75,7 @@ class Eventabler
      * @param string $attribute
      * @return bool
      */
-    private function isDirtyAttribute(string $attribute): bool
+    protected function isDirtyAttribute(string $attribute): bool
     {
         return $this->model->isDirty(explode('|', $attribute));
     }
@@ -85,7 +85,7 @@ class Eventabler
      *
      * @param array $eventClasses
      */
-    private function dispatch(array $eventClasses): void
+    protected function dispatch(array $eventClasses): void
     {
         array_map(fn($eventClass) => event(new $eventClass($this->model)), $eventClasses);
     }
