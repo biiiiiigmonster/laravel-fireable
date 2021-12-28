@@ -77,7 +77,13 @@ class Eventabler
      */
     protected function isDirtyAttribute(string $attribute): bool
     {
-        return $this->model->isDirty(explode('|', $attribute));
+        foreach (explode('&', $attribute) as $item) {
+            if (!$this->model->isDirty(explode('|', $item))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

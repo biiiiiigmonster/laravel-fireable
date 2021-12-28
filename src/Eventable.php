@@ -65,14 +65,12 @@ trait Eventable
     /**
      * Make the given, typically visible, attributes eventable if the given truth test passes.
      *
-     * @param bool|Closure $condition
+     * @param mixed $condition
      * @param array|string|null $eventables
      * @return $this
      */
-    public function makeEventableIf(bool|Closure $condition, array|string|null $eventables): static
+    public function makeEventableIf(mixed $condition, array|string|null $eventables): static
     {
-        $condition = $condition instanceof Closure ? $condition($this) : $condition;
-
-        return value($condition) ? $this->makeEventable($eventables) : $this;
+        return value($condition, $this) ? $this->makeEventable($eventables) : $this;
     }
 }
