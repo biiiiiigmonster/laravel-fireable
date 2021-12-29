@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Biiiiiigmonster\Eventable;
+namespace Biiiiiigmonster\Eventable\Concerns;
 
 
-use Closure;
+use BiiiiiigMonster\Eventable\Eventabler;
 use Illuminate\Database\Eloquent\Model;
 
 trait Eventable
