@@ -50,7 +50,7 @@ class Eventabler
             $this->dispatch(
                 array_filter(
                     $eventClasses,
-                    fn($eventClass, $value) => $isAssoc ? $this->isMatchValue($attribute, $value) : $this->isDirtyAttribute($attribute),
+                    static fn($eventClass, $value): bool => $isAssoc ? $this->isMatchValue($attribute, $value) : $this->isDirtyAttribute($attribute),
                     ARRAY_FILTER_USE_BOTH
                 )
             );
@@ -93,6 +93,11 @@ class Eventabler
      */
     protected function dispatch(array $eventClasses): void
     {
-        array_map(fn($eventClass) => event(new $eventClass($this->model)), $eventClasses);
+        array_map(
+            static function ($eventClass): void {
+                event(new $eventClass($this->model));
+            },
+            $eventClasses
+        );
     }
 }
