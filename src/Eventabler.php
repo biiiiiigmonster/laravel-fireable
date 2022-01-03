@@ -95,7 +95,7 @@ class Eventabler
     {
         array_map(
             static function ($eventClass): void {
-                event(new $eventClass($this->model));
+                event(new $eventClass((clone $this->model)->refresh()));
             },
             $eventClasses
         );
