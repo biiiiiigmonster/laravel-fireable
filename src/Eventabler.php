@@ -50,7 +50,9 @@ class Eventabler
             $this->dispatch(
                 array_filter(
                     $eventClasses,
-                    static fn($eventClass, $value): bool => $isAssoc ? $this->isMatchValue($attribute, $value) : $this->isDirtyAttribute($attribute),
+                    static fn($eventClass, $value): bool => $isAssoc
+                        ? $this->isMatchValue($attribute, $value)
+                        : $this->isDirtyAttribute($attribute),
                     ARRAY_FILTER_USE_BOTH
                 )
             );
