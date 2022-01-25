@@ -10,20 +10,14 @@ use Illuminate\Support\Arr;
 class Eventabler
 {
     /**
-     * Observe model.
-     *
-     * @var Model
-     */
-    protected Model $model;
-
-    /**
      * Eventabler constructor.
      *
      * @param Model $model
      */
-    public function __construct(Model $model)
+    public function __construct(
+        protected Model $model
+    )
     {
-        $this->model = $model;
     }
 
     /**
@@ -40,7 +34,7 @@ class Eventabler
     /**
      * Eventable handle.
      */
-    public function handle(): void
+    public function fire(): void
     {
         $eventable = $this->model->getEventable();
         foreach ($eventable as $attribute => $eventClasses) {
@@ -50,7 +44,7 @@ class Eventabler
             $this->dispatch(
                 array_filter(
                     $eventClasses,
-                    static fn($eventClass, $value): bool => $isAssoc
+                    static fn(string $eventClass, mixed $value): bool => $isAssoc
                         ? $this->isMatchValue($attribute, $value)
                         : $this->isDirtyAttribute($attribute),
                     ARRAY_FILTER_USE_BOTH
@@ -96,9 +90,7 @@ class Eventabler
     protected function dispatch(array $eventClasses): void
     {
         array_map(
-            static function ($eventClass): void {
-                event(new $eventClass((clone $this->model)->refresh()));
-            },
+            static fn(string $eventClass) => event(new $eventClass((clone $this->model)->refresh())),
             $eventClasses
         );
     }

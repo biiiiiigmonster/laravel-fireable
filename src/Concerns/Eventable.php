@@ -21,11 +21,7 @@ trait Eventable
      */
     protected static function bootEventable(): void
     {
-        static::saved(
-            static function (Model $model): void {
-                Eventabler::make($model)->handle();
-            }
-        );
+        static::saved(static fn(Model $model) => Eventabler::make($model)->fire());
     }
 
     /**
