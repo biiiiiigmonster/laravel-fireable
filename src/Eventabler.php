@@ -4,7 +4,7 @@
 namespace BiiiiiigMonster\Eventable;
 
 
-use Biiiiiigmonster\Eventable\Contracts\EventableAttributes;
+use BiiiiiigMonster\Eventable\Contracts\EventableAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
@@ -44,7 +44,7 @@ class Eventabler
             $events = Arr::isList($eventClasses) ? $eventClasses : array_filter(
                 $eventClasses,
                 static fn(string|array $eventClass, mixed $value) => $value instanceof EventableAttributes
-                    ? $value->match($key, $this->model)
+                    ? $value->fire($key, $this->model)
                     : $this->model->getAttributeValue($key) === $value,
                 ARRAY_FILTER_USE_BOTH
             );

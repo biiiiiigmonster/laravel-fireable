@@ -1,6 +1,6 @@
 <?php
 
-namespace Biiiiiigmonster\Eventable\Contracts;
+namespace BiiiiiigMonster\Eventable\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,5 +13,5 @@ interface EventableAttributes
      * @param Model $model
      * @return bool
      */
-    public function match(string $key, Model $model): bool;
+    public function fire(string $key, Model $model): bool;
 }

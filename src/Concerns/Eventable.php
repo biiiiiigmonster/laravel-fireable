@@ -1,21 +1,20 @@
 <?php
 
 
-namespace Biiiiiigmonster\Eventable\Concerns;
+namespace BiiiiiigMonster\Eventable\Concerns;
 
 
 use BiiiiiigMonster\Eventable\Eventabler;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Trait Eventable
+ * 
+ * @property array $eventable The attributes that should be event for save.
+ * @package BiiiiiigMonster\Eventable\Concerns
+ */
 trait Eventable
 {
-    /**
-     * The attributes that should be event for save.
-     *
-     * @var array
-     */
-    protected array $eventable = [];
-
     /**
      * Auto register eventable.
      */
@@ -31,7 +30,7 @@ trait Eventable
      */
     public function getEventable(): array
     {
-        return $this->eventable;
+        return $this->eventable ?? [];
     }
 
     /**
@@ -56,7 +55,7 @@ trait Eventable
     public function makeEventable(array|string|null $eventables): static
     {
         $this->eventable = array_merge(
-            $this->eventable, is_array($eventables) ? $eventables : func_get_args()
+            $this->getEventable(), is_array($eventables) ? $eventables : func_get_args()
         );
 
         return $this;
