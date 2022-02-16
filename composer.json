@@ -1,5 +1,5 @@
 {
-    "name": "biiiiiigmonster/laravel-eventable",
+    "name": "biiiiiigmonster/laravel-fireable",
     "description": "Laravel framework eloquent trait",
     "type": "library",
     "keywords": ["laravel", "orm", "trait"],
@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "BiiiiiigMonster\\Eventable\\": "src/"
+            "BiiiiiigMonster\\Fireable\\": "src/"
         }
     }
 }

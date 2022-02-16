@@ -1,10 +1,10 @@
 <?php
 
-namespace BiiiiiigMonster\Eventable\Contracts;
+namespace BiiiiiigMonster\Fireable\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface EventableAttributes
+interface FireableAttributes
 {
     /**
      * Decide if the cleanable retained.

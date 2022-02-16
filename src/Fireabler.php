@@ -1,17 +1,17 @@
 <?php
 
 
-namespace BiiiiiigMonster\Eventable;
+namespace BiiiiiigMonster\Fireable;
 
 
-use BiiiiiigMonster\Eventable\Contracts\EventableAttributes;
+use BiiiiiigMonster\Fireable\Contracts\FireableAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Eventabler
+class Fireabler
 {
     /**
-     * Eventabler constructor.
+     * Fireabler constructor.
      *
      * @param Model $model
      */
@@ -33,17 +33,17 @@ class Eventabler
     }
 
     /**
-     * Eventable trigger.
+     * Fireable trigger.
      */
     public function trigger(): void
     {
-        $trigger = array_intersect_key($this->model->getEventable(), $this->model->getDirty());
+        $trigger = array_intersect_key($this->model->getFireable(), $this->model->getDirty());
 
         foreach ($trigger as $key => $eventClasses) {
             $eventClasses = (array)$eventClasses;
             $events = Arr::isList($eventClasses) ? $eventClasses : array_filter(
                 $eventClasses,
-                static fn(string|array $eventClass, mixed $value) => $value instanceof EventableAttributes
+                static fn(string|array $eventClass, mixed $value) => $value instanceof FireableAttributes
                     ? $value->fire($key, $this->model)
                     : $this->model->getAttributeValue($key) === $value,
                 ARRAY_FILTER_USE_BOTH
