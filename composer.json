@@ -15,7 +15,14 @@
     },
     "autoload": {
         "psr-4": {
-            "BiiiiiigMonster\\Fireable\\": "src/"
+            "BiiiiiigMonster\\Fires\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BiiiiiigMonster\\Fires\\FiresServiceProvider"
+            ]
         }
     }
 }

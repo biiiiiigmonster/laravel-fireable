@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use BiiiiiigMonster\Fires\Contracts\FiresAttributes;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} implements FiresAttributes
+{
+    /**
+     * Decide if the cleanable retained.
+     *
+     * @param string $key
+     * @param Model $model
+     * @return bool
+     */
+    public function fire(string $key, Model $model): bool
+    {
+        //
+    }
+}

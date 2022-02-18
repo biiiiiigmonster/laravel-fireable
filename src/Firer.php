@@ -1,17 +1,17 @@
 <?php
 
 
-namespace BiiiiiigMonster\Fireable;
+namespace BiiiiiigMonster\Fires;
 
 
-use BiiiiiigMonster\Fireable\Contracts\FireableAttributes;
+use BiiiiiigMonster\Fires\Contracts\FiresAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 
-class Fireabler
+class Firer
 {
     /**
-     * Fireabler constructor.
+     * Firer constructor.
      *
      * @param Model $model
      */
@@ -35,17 +35,19 @@ class Fireabler
     /**
      * Fireable trigger.
      */
-    public function trigger(): void
+    public function handle(): void
     {
-        $trigger = array_intersect_key($this->model->getFireable(), $this->model->getDirty());
+        foreach ($this->model->getFires() as $key => $eventClasses) {
+            if (!$this->model->isDirty(explode('|', $key))) {
+                continue;
+            }
 
-        foreach ($trigger as $key => $eventClasses) {
             $eventClasses = (array)$eventClasses;
             $events = Arr::isList($eventClasses) ? $eventClasses : array_filter(
                 $eventClasses,
-                static fn(string|array $eventClass, mixed $value) => $value instanceof FireableAttributes
-                    ? $value->fire($key, $this->model)
-                    : $this->model->getAttributeValue($key) === $value,
+                static fn(string|array $eventClass, mixed $fuse) => $fuse instanceof FiresAttributes
+                    ? $fuse->fire($key, $this->model)
+                    : $this->model->getAttributeValue($key) === $fuse,
                 ARRAY_FILTER_USE_BOTH
             );
 
@@ -61,7 +63,7 @@ class Fireabler
     protected function dispatch(array $events): void
     {
         array_map(
-            static fn(string $event) => event(new $event((clone $this->model)->refresh())),
+            static fn(string $event) => event(new $event((clone $this->model)->syncOriginal())),
             $events
         );
     }
