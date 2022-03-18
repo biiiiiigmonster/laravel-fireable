@@ -45,7 +45,7 @@ class Firer
             $eventClasses = (array)$eventClasses;
             $events = Arr::isList($eventClasses) ? $eventClasses : array_filter(
                 $eventClasses,
-                static fn(string|array $eventClass, mixed $fuse) => $fuse instanceof FiresAttributes
+                fn(string|array $eventClass, mixed $fuse) => $fuse instanceof FiresAttributes
                     ? $fuse->fire($key, $this->model)
                     : $this->model->getAttributeValue($key) === $fuse,
                 ARRAY_FILTER_USE_BOTH
@@ -63,7 +63,7 @@ class Firer
     protected function dispatch(array $events): void
     {
         array_map(
-            static fn(string $event) => event(new $event((clone $this->model)->syncOriginal())),
+            fn(string $event) => event(new $event((clone $this->model)->syncOriginal())),
             $events
         );
     }
