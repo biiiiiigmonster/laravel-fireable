@@ -4,9 +4,10 @@
 namespace BiiiiiigMonster\Fires;
 
 
+use BiiiiiigMonster\Fires\Attributes\Fire;
 use BiiiiiigMonster\Fires\Contracts\FiresAttributes;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
+use ReflectionClass;
 
 class Firer
 {
@@ -37,22 +38,75 @@ class Firer
      */
     public function handle(): void
     {
-        foreach ($this->model->getFires() as $key => $eventClasses) {
-            if (!$this->model->isDirty(explode('|', $key))) {
+        $fires = $this->parse();
+
+        $events = [];
+        foreach ($fires as $key => $fire) {
+            if ($this->model->isClean(explode('|', $key))) {
                 continue;
             }
 
-            $eventClasses = (array)$eventClasses;
-            $events = Arr::isList($eventClasses) ? $eventClasses : array_filter(
-                $eventClasses,
-                fn(string|array $eventClass, mixed $fuse) => $fuse instanceof FiresAttributes
-                    ? $fuse->fire($key, $this->model)
-                    : $this->model->getAttributeValue($key) === $fuse,
-                ARRAY_FILTER_USE_BOTH
-            );
+            /** @var Fire $fire */
+            foreach ($fire->events as $event => $exact) {
+                if (is_numeric($event)) {
+                    $event = $exact;
+                    $exact = null;
+                }
 
+                if ($this->meet($exact, $key)) {
+                    $events[] = $event;
+                }
+            }
+        }
+
+        if (!empty($events)) {
             $this->dispatch($events);
         }
+    }
+
+    /**
+     * meet fire.
+     *
+     * @param mixed $value
+     * @param string $key
+     * @return bool
+     */
+    protected function meet(mixed $value, string $key): bool
+    {
+        if (is_null($value)) {
+            return true;
+        }
+        if ($value instanceof FiresAttributes) {
+            return $value->fire($key, $this->model);
+        }
+
+        return $this->model->getAttributeValue($key) === $value;
+    }
+
+    /**
+     * Parse fires of the model.
+     *
+     * @return array<string, Fire>
+     */
+    protected function parse(): array
+    {
+        $fires = [];
+
+        // from fires property
+        foreach ($this->model->getFires() as $key => $events) {
+            $fires[$key] = new Fire($key, $events);
+        }
+
+        // from Fire Attributes
+        $rfc = new ReflectionClass($this->model);
+        $fireAttributes = $rfc->getAttributes(Fire::class);
+        foreach ($fireAttributes as $fireAttribute) {
+            /** @var Fire $fireAttributeInstance */
+            $fireAttributeInstance = $fireAttribute->newInstance();
+            $fires[$fireAttributeInstance->attribute] = $fireAttributeInstance;
+        }
+
+        return $fires;
     }
 
     /**
@@ -62,8 +116,10 @@ class Firer
      */
     protected function dispatch(array $events): void
     {
+        $newModel = $this->model->replicate()->syncOriginal();
+
         array_map(
-            fn(string $event) => event(new $event((clone $this->model)->syncOriginal())),
+            fn(string $event) => event(new $event($newModel)),
             $events
         );
     }
