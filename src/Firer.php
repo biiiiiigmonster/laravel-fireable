@@ -8,6 +8,8 @@ use BiiiiiigMonster\Fires\Attributes\Fire;
 use BiiiiiigMonster\Fires\Contracts\FiresAttributes;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
+use ReflectionException;
+use Throwable;
 
 class Firer
 {
@@ -70,14 +72,21 @@ class Firer
      * @param mixed $value
      * @param string $key
      * @return bool
+     * @throws ReflectionException
      */
     protected function meet(mixed $value, string $key): bool
     {
         if (is_null($value)) {
             return true;
         }
-        if ($value instanceof FiresAttributes) {
-            return $value->fire($key, $this->model);
+
+        try {
+            $rfc = new ReflectionClass($value);
+        } catch (Throwable) {
+            $rfc = null;
+        }
+        if ($rfc?->implementsInterface(FiresAttributes::class)) {
+            return $rfc->newInstance()->fire($key, $this->model);
         }
 
         return $this->model->getAttributeValue($key) === $value;
