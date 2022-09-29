@@ -10,11 +10,11 @@ class {{ class }} implements FiresAttributes
     /**
      * Decide if the cleanable retained.
      *
-     * @param string $key
+     * @param string $field
      * @param Model $model
      * @return bool
      */
-    public function fire(string $key, Model $model): bool
+    public function fire(string $field, Model $model): bool
     {
         //
     }

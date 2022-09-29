@@ -43,7 +43,7 @@ class FireAttributesMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $relativePath = '/stubs/fire-attribute.stub';
+        $relativePath = '/stubs/fires-attributes.stub';
 
         return file_exists($customPath = $this->laravel->basePath(trim($relativePath, '/')))
             ? $customPath

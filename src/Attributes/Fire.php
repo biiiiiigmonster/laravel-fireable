@@ -8,21 +8,17 @@ use Attribute;
 class Fire
 {
     /**
-     * @var array $events
-     */
-    public array $events;
-
-    /**
      * Fire constructor.
      *
-     * @param string $attribute
-     * @param string|array $events
+     * @param string $field
+     * @param string $event
+     * @param mixed $match
      */
     public function __construct(
-        public string $attribute,
-        string|array $events
+        public string $field,
+        public string $event,
+        public mixed $match
     )
     {
-        $this->events = (array)$events;
     }
 }
