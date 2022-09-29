@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BiiiiiigMonster\Fires;
-
 
 use BiiiiiigMonster\Fires\Attributes\Fire;
 use Illuminate\Database\Eloquent\Model;
@@ -19,8 +17,7 @@ class FireManager
      */
     public function __construct(
         protected Model $model
-    )
-    {
+    ) {
     }
 
     /**
@@ -68,8 +65,8 @@ class FireManager
         try {
             $rfc = new ReflectionMethod($fire->match, 'fire');
             return $rfc->invokeArgs(null, [$fire->field, $this->model]);
-        }catch (Throwable) {
-            return $this->model->getAttributeValue($fire->field) === value($fire->match);
+        } catch (Throwable) {
+            return $this->model->getAttributeValue($fire->field) === $fire->match;
         }
     }
 

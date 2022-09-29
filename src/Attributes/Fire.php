@@ -18,7 +18,6 @@ class Fire
         public string $field,
         public string $event,
         public mixed $match
-    )
-    {
+    ) {
     }
 }

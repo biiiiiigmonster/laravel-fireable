@@ -1,15 +1,13 @@
 <?php
 
-
 namespace BiiiiiigMonster\Fires\Concerns;
-
 
 use BiiiiiigMonster\Fires\FireManager;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Trait HasFires
- * 
+ *
  * @property array $fires The attributes that should be event for save.
  * @package BiiiiiigMonster\Fires\Concerns
  */
@@ -20,7 +18,7 @@ trait HasFires
      */
     protected static function bootHasFires(): void
     {
-        static::saved(static fn(Model $model) => FireManager::make($model)->handle());
+        static::saved(static fn (Model $model) => FireManager::make($model)->handle());
     }
 
     /**
@@ -55,7 +53,8 @@ trait HasFires
     public function fire(array|string|null $fires): static
     {
         $this->fires = array_merge(
-            $this->getFires(), is_array($fires) ? $fires : func_get_args()
+            $this->getFires(),
+            is_array($fires) ? $fires : func_get_args()
         );
 
         return $this;
