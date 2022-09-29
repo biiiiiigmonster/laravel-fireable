@@ -69,7 +69,7 @@ class FireManager
             $rfc = new ReflectionMethod($fire->match, 'fire');
             return $rfc->invokeArgs(null, [$fire->field, $this->model]);
         }catch (Throwable) {
-            return $this->model->getAttributeValue($fire->field) === $fire->match;
+            return $this->model->getAttributeValue($fire->field) === value($fire->match);
         }
     }
 
