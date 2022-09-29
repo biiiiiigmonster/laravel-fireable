@@ -1,8 +1,6 @@
 <?php
 
-
 namespace BiiiiiigMonster\Fires;
-
 
 use BiiiiiigMonster\Fires\Console\FireAttributesMakeCommand;
 use Illuminate\Support\ServiceProvider;
