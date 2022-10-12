@@ -1,10 +1,11 @@
 <?php
 
-namespace BiiiiiigMonster\Fires;
+namespace BiiiiiigMonster\Fireable;
 
-use BiiiiiigMonster\Fires\Attributes\Fire;
-use BiiiiiigMonster\Fires\Contracts\InvokableFire;
+use BiiiiiigMonster\Fireable\Attributes\Fire;
+use BiiiiiigMonster\Fireable\Contracts\InvokableFire;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use ReflectionClass;
 
 class FireManager
@@ -38,19 +39,15 @@ class FireManager
         $fires = $this->parse();
         $newModel = $this->model->replicate()->syncOriginal();
 
-        foreach ($fires as $field => $fire) {
-            if ($this->model->isClean(explode('|', $field))) {
-                continue;
-            }
-
+        foreach ($fires as $fire) {
             if ($this->ready($fire)) {
-                event(new $fire->event($newModel));
+                array_map(fn ($event) => event(new $event($newModel)), $fire->events);
             }
         }
     }
 
     /**
-     * meet fire.
+     * ready fire.
      *
      * @param Fire $fire
      * @return bool
@@ -72,7 +69,7 @@ class FireManager
     /**
      * Parse fires of the model.
      *
-     * @return array<string, Fire>
+     * @return array<Fire>
      */
     protected function parse(): array
     {
@@ -80,12 +77,17 @@ class FireManager
 
         // from fires property
         foreach ($this->model->getFires() as $field => $events) {
-            foreach ((array)$events as $event => $match) {
-                if (is_numeric($event)) {
-                    $event = $match;
-                    $match = null;
+            if ($this->model->isClean(explode('|', $field))) {
+                continue;
+            }
+
+            $events = (array)$events;
+            if (Arr::isList($events)) {
+                $fires[] = new Fire($field, $events, null);
+            } else {
+                foreach ($events as $match => $event) {
+                    $fires[] = new Fire($field, (array)$event, $match);
                 }
-                $fires[$field] = new Fire($field, $event, $match);
             }
         }
 
@@ -94,7 +96,11 @@ class FireManager
         $fireAttributes = $rfc->getAttributes(Fire::class);
         foreach ($fireAttributes as $fireAttribute) {
             $fireAttributeInstance = $fireAttribute->newInstance();
-            $fires[$fireAttributeInstance->field] = $fireAttributeInstance;
+            if ($this->model->isClean(explode('|', $fireAttributeInstance->field))) {
+                continue;
+            }
+
+            $fires[] = $fireAttributeInstance;
         }
 
         return $fires;

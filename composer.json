@@ -22,18 +22,19 @@
     },
     "autoload": {
         "psr-4": {
-            "BiiiiiigMonster\\Fires\\": "src"
+            "BiiiiiigMonster\\Fireable\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BiiiiiigMonster\\Fires\\Tests\\": "tests"
+            "BiiiiiigMonster\\Fireable\\Tests\\": "tests",
+            "BiiiiiigMonster\\Fireable\\Database\\Factories\\": "database/factories"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "BiiiiiigMonster\\Fires\\FiresServiceProvider"
+                "BiiiiiigMonster\\Fireable\\FiresServiceProvider"
             ]
         }
     },

@@ -1,6 +1,6 @@
 <?php
 
-namespace BiiiiiigMonster\Fires\Attributes;
+namespace BiiiiiigMonster\Fireable\Attributes;
 
 use Attribute;
 
@@ -11,12 +11,12 @@ class Fire
      * Fire constructor.
      *
      * @param string $field
-     * @param string $event
+     * @param array<string> $events
      * @param mixed $match
      */
     public function __construct(
         public string $field,
-        public string $event,
+        public array $events,
         public mixed $match
     ) {
     }

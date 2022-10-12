@@ -2,7 +2,7 @@
 
 namespace {{ namespace }};
 
-use BiiiiiigMonster\Fires\Contracts\FiresAttributes;
+use BiiiiiigMonster\Fireable\Contracts\FiresAttributes;
 use Illuminate\Database\Eloquent\Model;
 
 class {{ class }} implements FiresAttributes

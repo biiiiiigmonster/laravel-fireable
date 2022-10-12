@@ -1,6 +1,6 @@
 <?php
 
-namespace BiiiiiigMonster\Fires\Console;
+namespace BiiiiiigMonster\Fireable\Console;
 
 use Illuminate\Console\GeneratorCommand;
 

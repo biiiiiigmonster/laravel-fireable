@@ -1,6 +1,6 @@
 <?php
 
-namespace BiiiiiigMonster\Fires\Contracts;
+namespace BiiiiiigMonster\Fireable\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 

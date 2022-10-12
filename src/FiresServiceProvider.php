@@ -1,8 +1,8 @@
 <?php
 
-namespace BiiiiiigMonster\Fires;
+namespace BiiiiiigMonster\Fireable;
 
-use BiiiiiigMonster\Fires\Console\InvokableFireMakeCommand;
+use BiiiiiigMonster\Fireable\Console\InvokableFireMakeCommand;
 use Illuminate\Support\ServiceProvider;
 
 class FiresServiceProvider extends ServiceProvider

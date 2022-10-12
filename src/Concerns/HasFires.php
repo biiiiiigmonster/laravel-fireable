@@ -1,8 +1,8 @@
 <?php
 
-namespace BiiiiiigMonster\Fires\Concerns;
+namespace BiiiiiigMonster\Fireable\Concerns;
 
-use BiiiiiigMonster\Fires\FireManager;
+use BiiiiiigMonster\Fireable\FireManager;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,7 +17,7 @@ trait HasFires
      */
     protected static function bootHasFires(): void
     {
-        static::saved(static fn (Model $model) => FireManager::make($model)->handle());
+        static::saved(fn (Model $model) => FireManager::make($model)->handle());
     }
 
     /**
