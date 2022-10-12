@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
  * Trait HasFires
  *
  * @property array<string, mixed> $fires The attributes that should be event for save.
- *
- * @mixin Model
  */
 trait HasFires
 {
