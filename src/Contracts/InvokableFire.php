@@ -4,7 +4,7 @@ namespace BiiiiiigMonster\Fires\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface FiresAttributes
+interface InvokableFire
 {
     /**
      * Decide if the cleanable retained.
@@ -13,5 +13,5 @@ interface FiresAttributes
      * @param Model $model
      * @return bool
      */
-    public function fire(string $key, Model $model): bool;
+    public function __invoke($key, $model);
 }

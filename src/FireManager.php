@@ -3,10 +3,9 @@
 namespace BiiiiiigMonster\Fires;
 
 use BiiiiiigMonster\Fires\Attributes\Fire;
+use BiiiiiigMonster\Fires\Contracts\InvokableFire;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
-use ReflectionMethod;
-use Throwable;
 
 class FireManager
 {
@@ -62,12 +61,12 @@ class FireManager
             return true;
         }
 
-        try {
-            $rfc = new ReflectionMethod($fire->match, 'fire');
-            return $rfc->invokeArgs(null, [$fire->field, $this->model]);
-        } catch (Throwable) {
-            return $this->model->getAttributeValue($fire->field) === value($fire->match);
+        if (is_a($fire->match, InvokableFire::class, true)) {
+            $invoke = new $fire->match();
+            return $invoke($fire->field, $this->model);
         }
+
+        return $this->model->getAttributeValue($fire->field) === value($fire->match);
     }
 
     /**

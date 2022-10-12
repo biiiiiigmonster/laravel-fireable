@@ -2,7 +2,7 @@
 
 namespace BiiiiiigMonster\Fires;
 
-use BiiiiiigMonster\Fires\Console\FireAttributesMakeCommand;
+use BiiiiiigMonster\Fires\Console\InvokableFireMakeCommand;
 use Illuminate\Support\ServiceProvider;
 
 class FiresServiceProvider extends ServiceProvider
@@ -14,6 +14,6 @@ class FiresServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->commands(FireAttributesMakeCommand::class);
+        $this->commands(InvokableFireMakeCommand::class);
     }
 }

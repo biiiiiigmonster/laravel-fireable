@@ -4,7 +4,7 @@ namespace BiiiiiigMonster\Fires\Console;
 
 use Illuminate\Console\GeneratorCommand;
 
-class FireAttributesMakeCommand extends GeneratorCommand
+class InvokableFireMakeCommand extends GeneratorCommand
 {
     /**
      * The console command name.
@@ -43,7 +43,7 @@ class FireAttributesMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        $relativePath = '/stubs/fires-attributes.stub';
+        $relativePath = '/stubs/invokable-fire.stub';
 
         return file_exists($customPath = $this->laravel->basePath(trim($relativePath, '/')))
             ? $customPath

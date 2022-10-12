@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Trait HasFires
  *
- * @property array $fires The attributes that should be event for save.
- * @package BiiiiiigMonster\Fires\Concerns
+ * @property array<string, mixed> $fires The attributes that should be event for save.
+ *
+ * @mixin Model
  */
 trait HasFires
 {
@@ -47,15 +48,12 @@ trait HasFires
     /**
      * Make the given, typically visible, attributes fires.
      *
-     * @param array|string|null $fires
+     * @param array $fire
      * @return $this
      */
-    public function fire(array|string|null $fires): static
+    public function fire(array $fire): static
     {
-        $this->fires = array_merge(
-            $this->getFires(),
-            is_array($fires) ? $fires : func_get_args()
-        );
+        $this->fires = array_merge($this->getFires(), $fire);
 
         return $this;
     }
