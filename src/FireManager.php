@@ -36,14 +36,13 @@ class FireManager
      */
     public function handle(): void
     {
-        $fires = $this->parse();
         $newModel = $this->model->replicate()->syncOriginal();
 
-        foreach ($fires as $fire) {
+        collect($this->parse())->map(function (Fire $fire) use ($newModel) {
             if ($this->ready($fire)) {
                 array_map(fn ($event) => event(new $event($newModel)), $fire->events);
             }
-        }
+        });
     }
 
     /**
