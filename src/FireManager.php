@@ -90,18 +90,6 @@ class FireManager
             }
         }
 
-        // from Fire Attributes
-        $rfc = new ReflectionClass($this->model);
-        $fireAttributes = $rfc->getAttributes(Fire::class);
-        foreach ($fireAttributes as $fireAttribute) {
-            $fireAttributeInstance = $fireAttribute->newInstance();
-            if ($this->model->isClean(explode('|', $fireAttributeInstance->field))) {
-                continue;
-            }
-
-            $fires[] = $fireAttributeInstance;
-        }
-
         return $fires;
     }
 }
