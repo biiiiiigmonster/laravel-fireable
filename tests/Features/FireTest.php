@@ -29,7 +29,7 @@ test('not fire test', function () {
 });
 
 test('match fire test', function () {
-    Event::fake([UpdatePwd::class,AgeEighteenMatch::class,AgeNineteenMatch::class]);
+    Event::fake([UpdatePwd::class, AgeEighteenMatch::class, AgeNineteenMatch::class]);
 
     $user = User::where('age', '!=', 18)->first();
     $user->age = 18;
@@ -39,7 +39,7 @@ test('match fire test', function () {
 });
 
 test('array fire test', function () {
-    Event::fake([UpdateUsername::class,UserModify::class]);
+    Event::fake([UpdateUsername::class, UserModify::class]);
 
     $user = User::inRandomOrder()->first();
     $user->username .= Str::random(3);

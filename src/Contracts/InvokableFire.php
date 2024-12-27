@@ -13,5 +13,5 @@ interface InvokableFire
      * @param Model $model
      * @return bool
      */
-    public function __invoke($key, $model);
+    public function __invoke($key, $model): bool;
 }

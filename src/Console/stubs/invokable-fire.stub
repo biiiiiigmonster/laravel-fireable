@@ -14,7 +14,7 @@ class {{ class }} implements FiresAttributes
      * @param Model $model
      * @return bool
      */
-    public function fire($field, $model)
+    public function fire($field, $model): bool
     {
         //
     }

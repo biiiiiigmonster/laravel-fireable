@@ -1,11 +1,11 @@
 <?php
 
-namespace BiiiiiigMonster\Fireable\Tests\Fires;
+namespace BiiiiiigMonster\Fireable;
 
 use BiiiiiigMonster\Fireable\Contracts\InvokableFire;
 use Illuminate\Database\Eloquent\Model;
 
-class UserMustContactable implements InvokableFire
+class WhateverFireable implements InvokableFire
 {
     /**
      * @param string $key
@@ -14,6 +14,6 @@ class UserMustContactable implements InvokableFire
      */
     public function __invoke($key, $model): bool
     {
-        return $model->$key === 1 && $model->phone?->exists;
+        return true;
     }
 }

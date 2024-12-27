@@ -36,10 +36,11 @@ class FireManager
      */
     public function handle(): void
     {
-        $newModel = $this->model->replicate()->syncOriginal();
+        $newModel = clone $this->model;
+        $newModel->syncOriginal();
 
         collect($this->parse())->map(function (Fire $fire) use ($newModel) {
-            if ($this->ready($fire)) {
+            if ($this->match($fire)) {
                 array_map(fn ($event) => event(new $event($newModel)), $fire->events);
             }
         });
@@ -51,7 +52,7 @@ class FireManager
      * @param Fire $fire
      * @return bool
      */
-    protected function ready(Fire $fire): bool
+    protected function match(Fire $fire): bool
     {
         if (is_null($fire->match)) {
             return true;

@@ -3,6 +3,7 @@
 namespace BiiiiiigMonster\Fireable\Tests\Models;
 
 use BiiiiiigMonster\Fireable\Concerns\HasFires;
+use BiiiiiigMonster\Fireable\WhateverFireable;
 use BiiiiiigMonster\Fireable\Tests\Events\AgeEighteenMatch;
 use BiiiiiigMonster\Fireable\Tests\Events\AgeNineteenMatch;
 use BiiiiiigMonster\Fireable\Tests\Events\UpdateAdmin;
@@ -21,10 +22,11 @@ class User extends Model
 
     protected $fires = [
         'password' => UpdatePwd::class,
-        'username' => [UserModify::class,UpdateUsername::class],
+        'username' => [UserModify::class, UpdateUsername::class],
         'age' => [
             18 => AgeEighteenMatch::class,
             19 => AgeNineteenMatch::class,
+            WhateverFireable::class => UserModify::class,
         ],
         'username|password' => UserModify::class,
         'status' => [UserMustContactable::class => UpdateAdmin::class],
