@@ -17,7 +17,8 @@ class FireManager
      */
     public function __construct(
         protected Model $model
-    ) {
+    )
+    {
     }
 
     /**
@@ -41,7 +42,7 @@ class FireManager
 
         collect($this->parse())->map(function (Fire $fire) use ($newModel) {
             if ($this->match($fire)) {
-                array_map(fn ($event) => event(new $event($newModel)), $fire->events);
+                array_map(fn($event) => event(new $event($newModel)), $fire->events);
             }
         });
     }

@@ -17,7 +17,7 @@ trait HasFires
      */
     protected static function bootHasFires(): void
     {
-        static::saved(fn (Model $model) => FireManager::make($model)->handle());
+        static::saved(fn(Model $model) => FireManager::make($model)->handle());
     }
 
     /**
